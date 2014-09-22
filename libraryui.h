@@ -1,3 +1,10 @@
+/*
+* Luke Wegryn
+* 9057-39534
+* lwegryn@vt.edu
+* ECE 3574
+* Homework 2
+*/
 #ifndef LIBRARY_UI_H_
 #define LIBRARY_UI_H_
 #include "library.h"
