@@ -281,3 +281,63 @@ void LibraryUI::read()
          add(objdata);
     }
 }
+
+QString LibraryUI::find()
+{
+	QString isbn, item;
+   cout << "Search ISBN: " << flush;
+   isbn = cin.readLine();
+   item = m_Lib->getItemString(isbn);
+   if(item == QString()) {
+      cout << isbn << " not found." << endl;
+      return item;
+   }
+   else {
+      cout << item << endl;
+      return isbn;
+   }
+}
+
+void LibraryUI::remove()
+{
+	QString isbn(find()), ans;
+   if(isbn == QString()) {
+      cout << isbn << " not found." << endl;
+      return;
+   }
+   cout << "Remove this item (Y/N)? " << flush;
+   ans = cin.readLine().toUpper();
+   if(ans.startsWith("N"))
+      return;
+   int numCopiesLeft = m_Lib->removeRefItem(isbn);
+   cout << "There are now  " << numCopiesLeft 
+        << " copies left in the library." << endl;
+}
+
+void LibraryUI::save()
+{
+	QFile outf("libfile");
+   outf.open(QIODevice::WriteOnly);
+   QTextStream outstr(&outf);
+   outstr << m_Lib->toString();
+   outf.close();
+}
+
+void LibraryUI::list()
+{
+	cout << m_Lib->toString() << endl;
+}
+
+void LibraryUI::prepareToQuit(bool saved)
+{
+	 QString ans;
+   if(not saved) {
+      cout << "Save data first (Y/N)? " << flush;
+      ans = cin.readLine().toUpper();
+      if(ans.startsWith("Y")) {
+         save();
+         exit(0);
+      }
+   }
+   exit(1);
+}
